@@ -6,11 +6,13 @@ import { useSelectUser } from '../../hooks/useSelectUser';
 import { User } from '../../types/user';
 import { UserCard } from '../organisms/layout/user/UserCard';
 import { UserDetailModal } from '../organisms/layout/user/UserDetailModal';
+import { useLoginUser } from '../../hooks/useLoginUser';
 
 export const UserManagement: VFC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { getUsers, users, loading } = useAllUsers();
   const { onSelectUser, selectedUser } = useSelectUser();
+  const { loginUser } = useLoginUser();
 
   useEffect(() => getUsers(), []);
 
@@ -42,7 +44,12 @@ export const UserManagement: VFC = memo(() => {
           ))}
         </Wrap>
       )}
-      <UserDetailModal isOpen={isOpen} onClose={onClose} user={selectedUser} />
+      <UserDetailModal
+        isOpen={isOpen}
+        onClose={onClose}
+        user={selectedUser}
+        isAdmin={loginUser?.isAdmin ?? false}
+      />
     </>
   );
 });
